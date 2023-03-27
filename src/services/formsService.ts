@@ -34,8 +34,18 @@ async function formatDate(initialDate: string, finalDate: string) {
 }
 
 async function getFormsByDate(startDate: string, endDate: string) {
-  await formsRepository.getFormsByDate(startDate, endDate);
+  const list = await formsRepository.getFormsByDate(startDate, endDate);
+
+  if (list.length === 0) {
+    throw {
+      type: 'not_found',
+      message: 'Não foram encontrados formulários nesse período',
+    };
+  }
+
+  return list;
 }
+
 const formsService = {
   checkEmailExist,
   createForm,
