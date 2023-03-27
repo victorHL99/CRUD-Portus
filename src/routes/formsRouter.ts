@@ -11,4 +11,6 @@ formsRouter.post(
   formsController.create,
 );
 
+formsRouter.get('/list', formsController.list);
+
 export default formsRouter;
