@@ -31,7 +31,7 @@ const createForm = Joi.object<Forms>({
     }),
   phone: Joi.string()
     .required()
-    .pattern(/^\([0-9]{2}\) [0-9] [0-9]{4}\-[0-9]{4}$/)
+    .pattern(/^\([0-9]{2}\)[0-9][0-9]{4}\-[0-9]{4}$/)
     .messages({
       'string.pattern.base': 'O número de telefone fornecido é inválido',
       'string.empty': 'O campo de telefone não pode estar vazio',
