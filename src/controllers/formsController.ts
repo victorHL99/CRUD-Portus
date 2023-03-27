@@ -29,9 +29,9 @@ async function listForms(request: Request, response: Response) {
 
   const { startDate, endDate } = await formsService.formatDate(start, end);
 
-  await formsService.getFormsByDate(startDate, endDate);
+  const list = await formsService.getFormsByDate(startDate, endDate);
 
-  return response.status(200).json({ message: 'ok' });
+  return response.status(200).json(list);
 }
 
 const formsController = {
