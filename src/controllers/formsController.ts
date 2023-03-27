@@ -21,8 +21,22 @@ async function createForm(request: Request, response: Response) {
     .json({ message: 'Formulário criado com sucesso' });
 }
 
+async function listForms(request: Request, response: Response) {
+  const { start, end } = request.query as {
+    start: string;
+    end: string;
+  };
+
+  const { startDate, endDate } = await formsService.formatDate(start, end);
+
+  await formsService.getFormsByDate(startDate, endDate);
+
+  return response.status(200).json({ message: 'ok' });
+}
+
 const formsController = {
   create: createForm,
+  list: listForms,
 };
 
 export default formsController;
