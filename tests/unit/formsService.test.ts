@@ -1,10 +1,12 @@
 import { jest } from '@jest/globals';
 import formsService from '../../src/services/formsService';
 import formsRepository from '../../src/repositories/formsRepository';
+import transformDate from 'utils/transformDate';
 
 describe('CheckEmailExist unit test suite', () => {
   afterEach(() => {
     jest.clearAllMocks();
+    jest.resetAllMocks();
   });
 
   it('should return null if email is not registered', async () => {
@@ -46,9 +48,11 @@ describe('CheckEmailExist unit test suite', () => {
     expect(formsRepository.getFormByEmail).toHaveBeenCalledTimes(1);
   });
 });
+
 describe('CreateForm unit test suite', () => {
   afterEach(() => {
     jest.clearAllMocks();
+    jest.resetAllMocks();
   });
 
   it('should call createForm from formsRepository', async () => {
@@ -68,4 +72,30 @@ describe('CreateForm unit test suite', () => {
   });
 });
 
-describe('FormatDate unit test suite', () => {});
+describe('FormatDate unit test suite', () => {
+  it('should return one object that contains {startDate, endDate} if startDate is less than endDate', async () => {
+    const initialDate = '28-01-2023';
+    const finalDate = '31-01-2023';
+
+    const startDate = transformDate(initialDate);
+    const endDate = transformDate(finalDate);
+
+    const result = await formsService.formatDate(initialDate, finalDate);
+
+    expect(result).toEqual({ startDate, endDate });
+  });
+
+  it('should return message "A data inicial deve ser menor que a data final" if startDate is greater than endDate', async () => {
+    const initialDate = '31-01-2023';
+    const finalDate = '28-01-2023';
+
+    try {
+      await formsService.formatDate(initialDate, finalDate);
+    } catch (error) {
+      expect(error.type).toBe('unprocessable_entity');
+      expect(error.message).toBe(
+        'A data inicial deve ser menor que a data final',
+      );
+    }
+  });
+});
