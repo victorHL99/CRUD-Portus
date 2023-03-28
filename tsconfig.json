@@ -4,7 +4,8 @@
     "module": "CommonJS",
     "target": "ES2022",
     "moduleResolution": "node",
-    "outDir": "dist"
+    "outDir": "dist",
+    "baseUrl": "src"
   },
   "ts-node": {
     "esm": true
