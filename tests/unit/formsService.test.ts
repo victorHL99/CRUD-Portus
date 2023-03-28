@@ -99,3 +99,61 @@ describe('FormatDate unit test suite', () => {
     }
   });
 });
+
+describe('GetFormsByDate unit test suite', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+    jest.resetAllMocks();
+  });
+
+  it('should return a list of forms if there are forms in the database', async () => {
+    const list = [
+      {
+        id: 1,
+        name: 'Victor Hugo',
+        email: 'victor@teste.com.br',
+        cpf: '53728531073',
+        phone: '(74)99999-8080',
+        created_at: '2023-01-29T03:00:00.000Z',
+      },
+      {
+        id: 2,
+        name: 'Victor Hugo teste',
+        email: 'victor@test2e.com.br',
+        cpf: '53728531073',
+        phone: '(74)99999-8080',
+        created_at: '2021-01-30T03:00:00.000Z',
+      },
+    ];
+
+    jest
+      .spyOn(formsRepository, 'getFormsByDate')
+      .mockImplementationOnce((): any => {
+        return list;
+      });
+
+    const result = await formsService.getFormsByDate(
+      '28-01-2023',
+      '31-01-2023',
+    );
+
+    expect(result).toEqual(list);
+  });
+
+  it('should return message "Não há formulários cadastrados nesse período" if there are no forms in the database', async () => {
+    jest
+      .spyOn(formsRepository, 'getFormsByDate')
+      .mockImplementationOnce((): any => {
+        return [];
+      });
+
+    try {
+      await formsService.getFormsByDate('28-01-2023', '31-01-2023');
+    } catch (error) {
+      expect(error.type).toBe('not_found');
+      expect(error.message).toBe(
+        'Não foram encontrados formulários nesse período',
+      );
+    }
+  });
+});
