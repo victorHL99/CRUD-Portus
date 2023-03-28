@@ -46,3 +46,26 @@ describe('CheckEmailExist unit test suite', () => {
     expect(formsRepository.getFormByEmail).toHaveBeenCalledTimes(1);
   });
 });
+describe('CreateForm unit test suite', () => {
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
+
+  it('should call createForm from formsRepository', async () => {
+    const form = {
+      name: 'Victor Hugo',
+      email: 'victor@teste.com.br',
+      cpf: '53728531073',
+      phone: '(74)99999-8080',
+      created_at: new Date(),
+    };
+
+    jest.spyOn(formsRepository, 'createForm').mockResolvedValueOnce(null);
+
+    await formsService.createForm(form);
+
+    expect(formsRepository.createForm).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('FormatDate unit test suite', () => {});
