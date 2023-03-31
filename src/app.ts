@@ -3,7 +3,7 @@ import cors from 'cors';
 import 'express-async-errors';
 import handlerError from './middlewares/handlerError';
 import routes from './routes';
-import limiter from 'middlewares/rateLimit';
+import limiter from './middlewares/rateLimit';
 
 const app = express();
 
